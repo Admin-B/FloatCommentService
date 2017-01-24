@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NiKO::한국어</title>
+		<meta charset="utf8">
+		<link href="./css/stylesheet.css" rel="stylesheet">
+		<script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
+	</head>
+	<body>
+		<section class="login-container">
+			<div class="input-wrap">
+				<input class="login-input" type="text" id="login-id" placeholder="이메일을 입력해주세요." autofocus>
+				<input class="login-input" type="password" id="login-pw" placeholder="비밀번호를 입력해주세요.">
+			</div>
+			<div class="login-btn">로그인</div>
+			<div class="login-alert"></div>
+			<div class="login-options">
+				<a href="/signup">회원이 아니세요?</a>
+			</div>
+		</section>
+		<script type="text/javascript">
+			var login_btn  =$(".login-btn");
+			var input_email=$("#login-id");
+			var input_pw   =$("#login-pw");
+			var login_alert=$(".login-alert");
+			var loading    =false;
+			login_btn.click(login);
+			$(".login-input").keydown(function(e){
+				if(e.which==13){
+					login();
+				}
+			});
+			function login(){
+				if(loading){
+					return;
+				}
+				var email=input_email.val();
+				var pw=input_pw.val();
+				if(!check_email(email)){
+					login_alert.html("형식에 맞게 이메일을 작성해주세요.");
+					input_email.focus();
+					return;
+				}
+				loading=true;
+				$.ajax({
+					url:"/api/user/login",
+					type:"post",
+					dataType:"json",
+					data:{
+						email:email,
+						password:pw
+					},
+					success:function(data){
+						loading=false;
+						if(data.result=="error"){
+							login_alert.html("로그인정보가 올바르지 않습니다.");
+							return;
+						}
+						location.replace("/");
+					}
+				});
+			}
+			function check_email(text) {
+				re=/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+				if(text.length<6 || !re.test(text)) {
+					return false;
+				}else{
+					return true;
+				}
+			}
+		</script>
+	</body>
+</html>

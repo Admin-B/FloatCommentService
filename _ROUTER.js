@@ -1,0 +1,30 @@
+module.exports=function(app){
+	app.get('/',function(req,res){
+		res.render("main.html",{
+			user_info:req.session.user_info
+		});
+	});
+	app.get("/login",function(req,res){
+		if(req.session.user_info){
+			res.redirect("/");
+			return;
+		}
+		res.render("login.html");
+	});
+	app.get("/watch",function(req,res){
+		res.render("404.html");
+	});
+	app.get("/logout",function(req,res){
+		delete req.session.user_info;
+		res.redirect("/");
+	});
+	app.get("/signup",function(req,res){
+		if(!req.session.user_info){
+			res.render("signup.html",{
+				user_info:null
+			});
+			return;
+		}
+		res.redirect("/");
+	});
+}

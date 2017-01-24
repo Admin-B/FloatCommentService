@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NiKO::한국어</title>
+		<meta charset="utf8">
+		<link href="../css/stylesheet.css" rel="stylesheet">
+		<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	</head>
+	<body>
+		<section class="main-container">
+			<% include ./_nav.html %>	
+			<section class="user-info-wrap">
+				<section class="user-info-left">
+					<section class="profile-wrap">
+						<article class="thumbnail">
+							<img src="<%=target.thumbnail%>">
+						</article>
+						<span><b><%=target.nickname%></b></span>
+						<span><small>가입일 <%=target.signup_date%></small></span>
+					</section>
+					<%
+						if(user_info && user_info.index==target.index){
+					%>
+					<a href="/logout" class="logout-btn">로그아웃</a>
+					<%
+						}
+					%>
+				</section>
+				<section class="user-info-right">
+					<% 
+					for(var i=0; i<flags.length; i++){
+					var flag=flags[i];
+					%>
+					<section class="flag-wrap">
+						<div class="flag-thumbnail"><a href="/watch/<%=flag.index%>" title="<%=flag.title%>"><img src="http://img.youtube.com/vi/<%=flag.origin_video.id%>/0.jpg"></a></div>
+						<div class="flag-content">
+							<a href="/watch/<%=flag.index%>" title="<%=flag.title%>"><%=flag.title%></a><br/>
+							<small><%=flag.origin_video.title%></small>
+
+							<hr style="margin:6px 0 0 0px" />
+							<small>
+								<%=flag.content%>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+							</small>
+						</div>
+					</section>
+					<% } %>
+				</section>
+			</section>
+
+		</section>
+	</body>
+</html>

@@ -1,0 +1,18 @@
+<nav class="nav-bar">
+	<a class="logo" href="/">로고</a>
+	<%
+	if(!user_info){
+	%>
+	<article class="login"><a href="/login">로그인</a></article>
+	<%
+	}else{
+	%>
+
+	<article>
+		<a href="/user/<%=user_info.index%>"><b><%=user_info.nick%></b></a>님 반갑습니다.
+	</article>
+	<article class="nav-thumbnail">
+		<a href="/user/<%=user_info.index%>"><img src="<%=user_info.thumbnail%>"></a>
+	</article>
+	<% } %>
+</nav>

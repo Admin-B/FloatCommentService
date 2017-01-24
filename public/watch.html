@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NiKO::한국어</title>
+		<meta charset="utf8">
+		<link href="../css/stylesheet.css" rel="stylesheet">
+		<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
+		<script src = 'https://www.youtube.com/iframe_api'></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	</head>
+	<body>
+		<section class="watch-container">
+			<% include ./_nav.html %>
+			<section class="watch-left">
+				<section class="video-wrap">
+				<div id="player"></div>
+				<canvas id="comments-canvas"></canvas>
+				</section>
+				<section class="video-info-wrap">
+					<article class="video-title"><%=flag.title%></article>
+					<hr/>
+					<%=flag.content%>
+				</section>
+			</section>
+			<section class="watch-right">
+				<section class="comments-wrap">
+					<section class="comment-line-wrap">
+						<%
+							for(var i=0; i<flag.comments.length; i++){
+							var comment=flag.comments[i];
+						%>							
+						<article class="comment-line" data-index="<%=i%>" data-id="<%=comment.id%>" writer="<%=comment.writer%>"><%=comment.text%></article>
+						<%
+							}
+						%>
+					</section>
+					<article class="comment-info">
+						<div class="loading"><span class="fa fa-spinner fa-spin" style="font-size: 1.5em"></span></div>
+						<div class="thumbnail"></div>
+						<span class="content"></span>
+					</article>		
+					<section class="comments-input-wrap">
+						<% if(user_info){ %>
+						<input id="comments-input" placeholder="댓글을 입력해 보세요" autofocus/>
+						<% }else{ %>
+						<input id="comments-input" placeholder="댓글작성을 위해 로그인 해주세요." maxlength="100" disabled/>
+						<% } %>
+						<div class="comments-send-btn"><span class="fa fa-paper-plane"></span></div>
+						<span class="alert-text"></span>
+					</section>
+					<div class="comment-mark"></div>
+				</section>
+				<section class="comment-options">
+					<span id="btn-auto-scroll" class="active">시간대별 댓글 표시</span>
+					<span id="btn-style-comment">댓글스타일 <small>준비중</small></span>
+					<span class="emotion active" data-type="like"><i class="fa fa-thumbs-o-up"></i></span>
+					<span class="emotion" data-type="unlike"><i class="fa fa-thumbs-o-down"></i></span>
+				</section>
+			</section>
+		</section>
+		<script type="text/javascript">
+			const videoIndex=<%=flag.index%>
+			var   comments  =<%-JSON.stringify(flag.comments)%>;
+
+			var   nowComment  =0;
+			var   startComment=nowComment;
+
+			var   commentWriters=[];
+		</script>
+		<script type="text/javascript" src="../js/comment-logic.js"></script>
+		<script type="text/javascript">
+			var player;
+			function onYouTubeIframeAPIReady() {
+				player = new YT.Player('player', {
+					width: "100%",
+					height:"100%",
+					playerVars:{
+						autoplay:1,
+						showinfo:0
+					},
+					videoId: '<%=flag.origin_video.id%>',
+					events: {
+					    'onStateChange': onPlayerStateChange,
+					},
+				});
+			}
+			function onPlayerStateChange(e){
+				switch(e.data){
+					case 1:
+						if(step){
+							readyStep();
+							step();
+						}
+					break;
+					case 2:
+						if(animationFrame){
+							window.cancelAnimationFrame(animationFrame);
+						}
+						break;
+				}
+			}
+		</script>
+	</body>
+</html>

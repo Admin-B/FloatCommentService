@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NiKO::한국어</title>
+		<meta charset="utf8">
+		<link href="./css/stylesheet.css" rel="stylesheet">
+		<script type="text/javascript" src="./js/jquery-3.1.1.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	</head>
+	<body>
+		<section class="main-container">
+			<% include ./_nav.html %>
+			<section class="search-wrap">
+				<input class="search" type="text" placeholder="검색어를 입력하세요.">
+				<div class="search-btn">검색</div>
+			</section>
+			<!--
+			<article class="ranking-title">TOP 랭킹</article>
+			<section class="ranking-slider">
+				<a href="#" class="ranking-box"></a>
+				<a href="#" class="ranking-box"></a>
+				<a href="#" class="ranking-box"></a>
+				<a href="#" class="ranking-box"></a>
+				<a href="#" class="ranking-box"></a>
+			</section>
+			<hr/>
+			-->
+			<h3>리스트</h3>
+			<section class="main-content">
+			</section>
+		</section>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var main_content=$(".main-content");
+				$.ajax({
+					type:"post",
+					dataType:"json",
+					url:"/api/list/flags",
+					data:{
+						skip :0,
+						limit:50,
+						sort :"new"
+					},
+					success:function(result){
+						if(result.result!="success"){
+							return;
+						}
+						console.log(result);
+						for(var i=0; i<result.data.length; i++){
+							var target=result.data[0];
+							main_content.append('<div class="flag-box"><a title='+target.title+' href="/watch/'+target.index+'"><div class="img-wrap"><img src="http://img.youtube.com/vi/'+target.origin_video.id+'/0.jpg"></div></a><a href="/watch/'+target.index+'" title="'+target.title+'">'+target.title+'</a></div>')
+						}
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

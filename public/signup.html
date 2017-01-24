@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NiKO::한국어</title>
+		<meta charset="utf8">
+		<link href="../css/stylesheet.css" rel="stylesheet">
+		<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	</head>
+	<body>
+		<section class="main-container signup-container">
+			<% include ./_nav.html %>
+			<h3>회원정보 입력</h3>
+			<hr/>
+			<input id="email" placeholder="현재 사용중인 이메일을 적어주세요." type="email">
+			<input id="password" type="password" placeholder="로그인 시 사용할 비밀번호를 적어주세요.">
+			<input id="repassword" type="password" placeholder="비밀번호를 재입력 해주세요.">
+			<div class="btn-signup">이메일 인증번호 발송</div>
+		</section>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".btn-signup").click(function(){
+					$.ajax({
+						url:"/api/sync/sendEmail",
+						type:"post",
+						dataType:"json",
+						data:{
+							email:$("#email").val(),
+							password:$("#password").val()
+						},success:function(result){
+							if(result.result=="error"){
+							
+							alert("a")
+								return;
+							}
+							alert("b")
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
